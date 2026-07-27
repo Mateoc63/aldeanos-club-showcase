@@ -24,25 +24,25 @@ flowchart TD
     end
 
     subgraph EdgeLayer["🌍 CDN & Capa de Entrada (DNS)"]
-        WPDomain["aldeanosclub.com\n(WordPress / Hostinger)"]
-        AppDomain["app.aldeanosclub.com\n(Next.js App / Vercel)"]
-        APIDomain["api.aldeanosclub.com\n(Reverse Proxy / Hetzner)"]
+        WPDomain["aldeanosclub.com<br/>(WordPress / Hostinger)"]
+        AppDomain["app.aldeanosclub.com<br/>(Next.js App / Vercel)"]
+        APIDomain["api.aldeanosclub.com<br/>(Reverse Proxy / Hetzner)"]
     end
 
     subgraph VPS["🖥️ VPS Linux (Hetzner)"]
-        Caddy["Caddy Server\n(Reverse Proxy + Automatic SSL)"]
+        Caddy["Caddy Server<br/>(Reverse Proxy + Automatic SSL)"]
         
         subgraph DockerNet["🐳 Red Privada Docker"]
-            API["Spring Boot 3 API\n(Java 21 / REST)"]
-            DB[(PostgreSQL 16\nDatabase)]
+            API["Spring Boot 3 API<br/>(Java 21 / REST)"]
+            DB[("PostgreSQL 16<br/>Database")]
         end
     end
 
     %% Flow connections
-    Browser -->|Tráfico Comercial / SEO| WPDomain
-    Browser -->|App de Clientes / Dashboard| AppDomain
-    AppDomain -->|Peticiones HTTPS / REST| APIDomain
+    Browser -->|"Tráfico Comercial / SEO"| WPDomain
+    Browser -->|"App de Clientes / Dashboard"| AppDomain
+    AppDomain -->|"Peticiones HTTPS / REST"| APIDomain
     
     APIDomain --> Caddy
-    Caddy -->|HTTP Proxy Pass (Port 8080)| API
-    API -->|Spring Data JPA / HikariCP| DB
+    Caddy -->|"HTTP Proxy Pass (Port 8080)"| API
+    API -->|"Spring Data JPA / HikariCP"| DB
