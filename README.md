@@ -17,7 +17,7 @@ El sistema reemplaza procesos manuales (planillas de cálculo y carnets físicos
 
 | Formulario de Autenticación (RBAC) | Tarjeta Digital Web del Socio | Email Transaccional Automatizado |
 | :---: | :---: | :---: |
-| ![Login](./docs/images/login.png) | ![Tarjeta Web](./docs/images/tarjeta-web-qr.png) | ![Email QR](./docs/images/email-credencial-qr.png) |
+| ![Login](./docs/images/login.png) | ![Tarjeta Web](./docs/images/tarjeta-web-qr.png) | ![Email QR](./docs/images/mail-recibido.png) |
 
 ---
 
@@ -55,7 +55,7 @@ El módulo de punto de venta evalúa en tiempo real el estado financiero del soc
 
 | Dashboard de Métricas y Trazabilidad de Visitas en Tiempo Real |
 | :---: |
-| ![Auditoría Visitas](./docs/images/pagina-visitas.png) |
+| ![Auditoría Visitas](./docs/images/visitas-pagina.png) |
 | *Permite filtrar consumos por local, fecha y socio para análisis de retención y métricas de negocio.* |
 
 ---
