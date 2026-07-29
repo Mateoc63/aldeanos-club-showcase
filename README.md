@@ -5,21 +5,58 @@
 
 ---
 
-## 📸 Resumen Ejecutivo & Demostración Visual
+## 📸 Resumen Ejecutivo & Tour Visual del Sistema
 
-**Aldeanos Club** es una plataforma SaaS distribuida diseñada para automatizar la gestión de clubes de fidelización de vinos y beneficios comerciales. 
+**Aldeanos Club** es una plataforma SaaS distribuida diseñada para automatizar la gestión de clubes de fidelización de vinos y beneficios comerciales.
 
 El sistema reemplaza procesos manuales (planillas de cálculo y carnets físicos) por una **arquitectura desacoplada de alta velocidad** que automatiza el alta de socios desde e-commerce, valida credenciales vía QR en tiempo real, bloquea consumos duplicados por fraude y audita métricas de uso por comercio.
 
-### 🖥️ Módulos de la Plataforma en Producción
+---
 
-| Credencial Digital Automatizada (Email/QR) | Panel de Control de Socios & Estados |
-| :---: | :---: |
-| ![Credencial QR](./docs/images/email-credencial-qr.png) | ![Panel de Socios](./docs/images/panel-socios.png) |
+### 1. Autenticación & Credencial Digital de Socio
 
-| Auditoría de Visitas & Métricas en Tiempo Real | Escáner QR de Punto de Venta |
+| Formulario de Autenticación (RBAC) | Tarjeta Digital Web del Socio | Email Transaccional Automatizado |
+| :---: | :---: | :---: |
+| ![Login](./docs/images/login.png) | ![Tarjeta Web](./docs/images/tarjeta-web-qr.png) | ![Email QR](./docs/images/email-credencial-qr.png) |
+
+---
+
+### 2. Panel de Administración Central (SUPERADMIN)
+
+| Panel Principal de Gestión de Socios | Formulario de Alta Manual de Socio |
 | :---: | :---: |
-| ![Auditoría de Visitas](./docs/images/dashboard-visitas-metricas.png) | ![Escáner QR](./docs/images/escaner-qr.png) |
+| ![Panel Superadmin](./docs/images/panel-superadmin.png) | ![Registro Socio](./docs/images/registro-socio-manual.png) |
+
+| Red de Comercios Adheridos | Alta de Nuevo Comercio Adherido |
+| :---: | :---: |
+| ![Comercios](./docs/images/pagina-comercios.png) | ![Nuevo Comercio](./docs/images/nuevo-comercio.png) |
+
+> **Gestión de Accesos a Comercios:** El SUPERADMIN puede generar y asignar credenciales independientes a cada comercio adherido con rol restringido `RECEPCION` (`./docs/images/credenciales-comercio.png`).
+
+---
+
+### 3. Motor Operativo de Escaneo QR & Reglas de Negocio
+
+El módulo de punto de venta evalúa en tiempo real el estado financiero del socio y la disponibilidad de sus beneficios:
+
+| Caso 1: Socio Activo (Acceso Autorizado) | Caso 2: Socio Suspendido (Bloqueado por Mora) |
+| :---: | :---: |
+| ![Socio Activo](./docs/images/escaner-socio-activo.png) | ![Socio Suspendido](./docs/images/escaner-socio-suspendido.png) |
+| *Valida cuota al día e impacta la visita.* | *Rechaza el descuento si supera los 45 días de mora.* |
+
+| Caso 3: Canje de Vino Autorizado | Caso 4: Doble Canje Bloqueado (Guarda Anti-Fraude) |
+| :---: | :---: |
+| ![Vino Autorizado](./docs/images/escaner-vino-autorizado.png) | ![Vino Bloqueado](./docs/images/escaner-vino-bloqueado.png) |
+| *Entrega y registra el beneficio del mes.* | *Bloquea un segundo intento dentro del mismo periodo.* |
+
+---
+
+### 4. Módulo de Auditoría de Visitas & Métricas Comerciales
+
+| Dashboard de Métricas y Trazabilidad de Visitas en Tiempo Real |
+| :---: |
+| ![Auditoría Visitas](./docs/images/pagina-visitas.png) |
+| *Permite filtrar consumos por local, fecha y socio para análisis de retención y métricas de negocio.* |
 
 ---
 
