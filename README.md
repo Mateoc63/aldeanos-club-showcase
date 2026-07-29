@@ -47,7 +47,7 @@ La aplicación implementa **Spring Security + JWT** restringiendo funciones seg�
 | Rol | Permisos & Alcance Técnico |
 | :--- | :--- |
 | **`SUPERADMIN`** *(Studio 87 / Mateo)* | Control global. Alta/suspensión manual de socios, gestión de comercios adheridos, generación de credenciales, auditoría global de visitas y override de canjes de vino. |
-| **`MERCHANT_ADMIN`** *(Comercio Emisor - La Aldea)* | Visualización de nómina de socios, alta directa de clientes en mostrador, escáner dual (validación de cuota + entrega del beneficio mensual de vino con bloqueo anti-fraude). |
+| **`ALDEA_ADMIN`** *(Comercio Emisor - La Aldea)* | Visualización de nómina de socios, alta directa de clientes en mostrador, escáner dual (validación de cuota + entrega del beneficio mensual de vino con bloqueo anti-fraude). |
 | **`RECEPCION`** *(Comercio Adherido)* | Vista reducida exclusiva de escaneo QR. Permite verificar estado activo/suspendido antes de aplicar descuentos e impacta la visita en la base de datos centralizada. |
 
 ---
