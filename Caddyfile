@@ -1,0 +1,3 @@
+api.aldeanosclub.com {
+    reverse_proxy backend_api:8080
+}

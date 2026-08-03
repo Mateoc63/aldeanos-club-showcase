@@ -1,0 +1,54 @@
+services:
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: la_aldea_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: la_aldea_db
+      POSTGRES_USER: aldea_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - aldea_network
+
+  backend_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: la_aldea_api
+    restart: always
+    depends_on:
+      - postgres_db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_db:5432/la_aldea_db
+      SPRING_DATASOURCE_USERNAME: aldea_user
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - aldea_network
+
+  caddy_proxy:
+    image: caddy:2-alpine
+    container_name: la_aldea_caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend_api
+    networks:
+      - aldea_network
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  aldea_network:
+    driver: bridge
