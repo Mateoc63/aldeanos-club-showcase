@@ -110,3 +110,96 @@ sequenceDiagram
     API->>Mail: Genera y Envía Email Transaccional con QR
     Mail-->>Cliente: Recibe Email con Credencial Web y Descargar QR HD
     API-->>WP: HTTP 201 Created (Marca meta _api_registrado = yes)
+```
+## 🐳 Arquitectura Cloud, Infraestructura & Despliegue
+
+La solución se encuentra orquestada mediante **Docker Compose** sobre un servidor VPS Linux (Hetzner), estructurada en una arquitectura aislada de tres contenedores de alto rendimiento:
+
+1. **`backend_api` (Spring Boot 3 / Java 21)**: API REST containerizada construida mediante *multi-stage build* para minimizar la huella de imagen.
+2. **`postgres_db` (PostgreSQL 16 Alpine)**: Motor relacional aislado dentro de la red interna privada `aldea_network`, persistido en volumen atómico y protegido por `healthcheck` de inicialización.
+3. **`caddy_proxy` (Caddy Server 2 Alpine)**: Reverse Proxy público que gestiona la terminación TLS/SSL automática mediante Let's Encrypt y redirige el tráfico HTTPS directamente a la API de Spring Boot.
+
+### Especificación de Orquestación (`docker-compose.yml`)
+
+```yaml
+version: '3.8'
+
+services:
+  backend_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: la_aldea_api
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_db:5432/la_aldea_db
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    networks:
+      - aldea_network
+
+  caddy_proxy:
+    image: caddy:2-alpine
+    container_name: la_aldea_caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      backend_api:
+        condition: service_started
+    networks:
+      - aldea_network
+
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: la_aldea_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: la_aldea_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d la_aldea_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - aldea_network
+
+networks:
+  aldea_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:
+```
+
+---
+
+## 🛠️ Tech Stack Completo
+
+* **Backend**: Java 21, Spring Boot 3.x, Spring Security (JWT), Spring Data JPA, Hibernate, Jakarta Validation, Lombok.
+* **Frontend**: Next.js 14, React 18, TypeScript, Tailwind CSS, Lucide Icons, QR Scanner Web Camera Engine.
+* **Integración & Cloud**: WooCommerce Webhooks, Caddy Server 2, Docker, Docker Compose, Hetzner VPS.
+* **Persistencia**: PostgreSQL 16 Alpine.
+
+---
+
+## ✒️ Autoría y Desarrollo
+
+Diseñado, desarrollado e implementado por **Mateo Cagnoni**.
+* **LinkedIn:** [linkedin.com/in/mateocagnoni](https://www.linkedin.com/in/mateocagnoni)
+* **GitHub:** [@Mateoc63](https://github.com/Mateoc63)
