@@ -1,6 +1,6 @@
 # 🍷 Aldeanos Club — Architecture & SaaS Ecosystem Showcase
 
-> **Caso de Estudio de Arquitectura, Integración Webhook y Sistema Distribuido Multi-Tenant.**  
+> **Caso de Estudio de Arquitectura, Integración Webhook y Sistema Distribuido Multi-Rol.**  
 > *Este repositorio documenta el diseño, la arquitectura cloud, la seguridad RBAC y los contratos de API para la plataforma SaaS de fidelización "Aldeanos Club". El código fuente privado del cliente se mantiene bajo acuerdo de confidencialidad.*
 
 ---
