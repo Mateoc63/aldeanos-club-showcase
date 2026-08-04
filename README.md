@@ -122,23 +122,35 @@ La solución se encuentra orquestada mediante **Docker Compose** sobre un servid
 ### Especificación de Orquestación (`docker-compose.yml`)
 
 ```yaml
-version: '3.8'
-
 services:
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: la_aldea_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: la_aldea_db
+      POSTGRES_USER: aldea_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - aldea_network
+
   backend_api:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: la_aldea_api
     restart: always
+    depends_on:
+      - postgres_db
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_db:5432/la_aldea_db
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_DATASOURCE_USERNAME: aldea_user
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-    depends_on:
-      postgres_db:
-        condition: service_healthy
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
+      APP_SECURITY_WORDPRESS_API_KEY: ${WP_API_KEY}
     networks:
       - aldea_network
 
@@ -154,37 +166,18 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
-      backend_api:
-        condition: service_started
+      - backend_api
     networks:
       - aldea_network
-
-  postgres_db:
-    image: postgres:16-alpine
-    container_name: la_aldea_postgres
-    restart: always
-    environment:
-      POSTGRES_DB: la_aldea_db
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d la_aldea_db"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - aldea_network
-
-networks:
-  aldea_network:
-    driver: bridge
 
 volumes:
   postgres_data:
   caddy_data:
   caddy_config:
+
+networks:
+  aldea_network:
+    driver: bridge
 ```
 
 ---
