@@ -196,3 +196,9 @@ networks:
 Diseñado, desarrollado e implementado por **Mateo Cagnoni**.
 * **LinkedIn:** [linkedin.com/in/mateocagnoni](https://www.linkedin.com/in/mateocagnoni)
 * **GitHub:** [@Mateoc63](https://github.com/Mateoc63)
+
+---
+
+## 🔒 Confidencialidad & Propiedad Intelectual
+
+> **Nota**: Este repositorio constituye un **caso de estudio técnico y demostración de arquitectura**. Todos los datos de clientes, métricas financieras, productos y marcas comerciales expuestas en las capturas de pantalla han sido anonimizados o adaptados conforme a los acuerdos de confidencialidad (NDA).
